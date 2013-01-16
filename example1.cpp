@@ -7,8 +7,8 @@
 
 #include "Angel.h"
 
-// Number of points in polyline
-const int NumPoints = 3;
+// Number of points in drawing
+const int NumPoints = 15000;
 
 //----------------------------------------------------------------------------
 
@@ -36,13 +36,17 @@ void generateGeometry( void )
 	// though they will probably still work on most machines others
 	// will require compatiability mode to be used
 
-	// Specifiy the vertices for a triangle
-	// for 3d points use vec3 and change your vPosition attribute appropriately
-
-	points[0] = point2( -0.5, -0.5 );
-	points[1] = point2( 0.0, 0.5 );
-	points[2] = point2( 0.5, -0.5 );
-
+	// A triangle in the plane z= 0
+	point2 vertices[3]={point2(-1.0,-1.0), point2(0.0,1.0), point2(1.0,-1.0)};
+	// An arbitrary initial point inside the triangle
+	points[0] = point2(0.25, 0.50);
+	// compute and store NumPoints-1 new points
+	for(int k = 1; k < NumPoints; k++) {
+		int j = rand() % 3; // pick a vertex at random
+		// Compute the point halfway between selected
+		// vertex and previous point
+		points[k] = (points[k-1]+vertices[j])/2.0;
+	}
 
 }
 
@@ -103,7 +107,7 @@ display( void )
 	// refer to the latest OpenGL documentation for implementation details
 
 	glClear( GL_COLOR_BUFFER_BIT );     // clear the window
-	glDrawArrays( GL_LINE_LOOP, 0, NumPoints );    // draw the points
+	glDrawArrays( GL_POINTS, 0, NumPoints );    // draw the points
 	glFlush(); // force output to graphics hardware
 
 }

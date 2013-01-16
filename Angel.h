@@ -34,6 +34,10 @@
 //     this this "include" directory.
 //
 
+#ifdef _WIN32
+	#define GLEW_STATIC
+#endif
+
 #ifdef __APPLE__  // include Mac OS X verions of headers
 #  include <OpenGL/OpenGL.h>
 #  include <GLUT/glut.h>
